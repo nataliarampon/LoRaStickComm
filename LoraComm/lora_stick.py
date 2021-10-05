@@ -17,7 +17,7 @@ class LoraStick(Antenna):
         self.send_cmd(DISABLE_TIMEOUT)
         self.send_cmd(SET_CONTINUOUS_RADIO_RECEPTION)
     
-    def enter_tx_mode(self)
+    def enter_tx_mode(self):
         self.send_cmd(START_RADIO_OP)
 
     def send(self, data):

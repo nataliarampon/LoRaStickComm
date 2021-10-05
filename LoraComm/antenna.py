@@ -8,7 +8,7 @@ class Antenna(object):
     def enter_rx_mode(self):
         raise NotImplementedError("Antenna enter_rx_mode method not implemented")
     
-    def enter_tx_mode(self)
+    def enter_tx_mode(self):
         raise NotImplementedError("Antenna enter_tx_mode method not implemented")
     
     def send(self, data):

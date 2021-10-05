@@ -6,15 +6,12 @@ To-do:
     []        2.2.2 - Distiction between ACKs from LoRa and actual received data (radio_rx)
     [] 3 - Pick up data and put into packet into socket  
 """
-import time
 import serial
-import argparse 
-import threading as thr
+import argparse
 import socket
 
-from serial.threaded import LineReader, ReaderThread
+from serial.threaded import ReaderThread
 
-from commands import *
 from radio_receiver import *
 from radio_sender import *
 
@@ -30,11 +27,13 @@ socket.bind(("lo", 0))  # Check which address should be used
 serial = serial.Serial(args.port, baudrate=57600)
 
 thread_rx = ReaderThread(serial, Receiver)
-thread_rx.setup_thread(socket)
+thread_rx.start()
+thread_rx.protocol.setup_thread(socket)
 
 thread_tx = ReaderThread(serial, Sender)
-thread_tx.setup_thread(thread_rx)
+thread_tx.start()
+thread_tx.protocol.setup_thread(socket, thread_rx)
 
 while(1):
+    thread_tx.protocol.tx()
     thread_rx.run()
-    thread_tx.tx()

@@ -50,5 +50,3 @@ class LoraCommands:
 
     ## Radio transfer over radio
     RADIO_DATA_TRANSFER = 'radio tx {}'
-
-
