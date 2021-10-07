@@ -15,7 +15,8 @@ class Sender(LineReader):
 
     def connection_made(self, transport):
         logging.debug("[Sender] Connection Made")
-        self.antenna = LoraStick(transport)
+        self.transport = transport
+        self.antenna = LoraStick(self)
         self.antenna.setup()
 
     def handle_line(self, data):

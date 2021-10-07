@@ -2,14 +2,15 @@
 
 import time
 import logging
+from serial.threaded import LineReader
 
 from antenna import Antenna
 from commands import LoraCommands
 
 class LoraStick(Antenna):
 
-    def __init__(self, transport):
-        self.transport = transport
+    def __init__(self, line_reader: LineReader):
+        self.line = line_reader
 
     def setup(self):
         self.send_cmd(LoraCommands.GET_VERSION)
@@ -39,6 +40,5 @@ class LoraStick(Antenna):
     
     def send_cmd(self, command, delay=.5):
         logging.debug("[Sender] SEND: %s" % command)
-        # self.transport.write(('%s\r\n' % command).encode('UTF-8'))
-        self.write_line(command)
+        self.line.write_line(command)
         time.sleep(delay)

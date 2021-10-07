@@ -14,7 +14,8 @@ class Receiver(LineReader):
 
     def connection_made(self, transport):
         logging.debug("[Receiver] Connection Made")
-        self.antenna = LoraStick(transport)
+        self.transport = transport
+        self.antenna = LoraStick(self)
         self.antenna.setup()
         self.antenna.enter_rx_mode()
 
