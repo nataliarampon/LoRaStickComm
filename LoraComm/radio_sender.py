@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
 import time
+import logging
 
 from serial.threaded import LineReader
 from commands import LoraCommands
+from lora_stick import LoraStick
 
 class Sender(LineReader):
 
@@ -12,40 +14,27 @@ class Sender(LineReader):
     #     self.lock = lock
 
     def connection_made(self, transport):
-        print("connection made")
-        self.transport = transport
-        self.send_cmd(LoraCommands.TURN_ON_LED)
-        self.send_cmd(LoraCommands.GET_VERSION)
-        self.send_cmd(LoraCommands.GET_RADIO_MODE)
-        self.send_cmd(LoraCommands.GET_RADIO_FREQUENCY)
-        self.send_cmd(LoraCommands.GET_RADIO_SPREADING_FACTOR)
-        self.send_cmd(LoraCommands.START_RADIO_OP)
-        self.send_cmd(LoraCommands.SET_RADIO_POWER.format(10))
-        self.send_cmd(LoraCommands.TURN_ON_LED)
+        logging.debug("[Sender] Connection Made")
+        self.antenna = LoraStick(transport)
+        self.antenna.setup()
 
     def handle_line(self, data):
         if data == LoraCommands.RADIO_DATA_OK:
             return
-        print("RECV: %s" % data)
+        logging.debug("[Sender] RECV: %s" % data)
 
-    def connection_lost(self, exc):
-        if exc:
-            print(exc)
-        print("port closed")
+    def connection_lost(self, exception):
+        if exception:
+            logging.error(exception)
+        logging.debug("[Sender] Port Closed")
 
     def tx(self):
-        msg = input("type a message to send: ")
-        # socket_msg = socket.recv(255)
-        # self.lock.acquire()
-        self.rx_thread.stop()
-        self.send_cmd(LoraCommands.TURN_OFF_LED) # Turn off LED during transmitting
-        txmsg = LoraCommands.RADIO_DATA_TRANSFER.format(msg.encode("utf-8").hex())
-        # txmsg = RADIO_DATA_TRANSFER.format(socket_msg.hex())
-        self.send_cmd(txmsg)
-        self.send_cmd(LoraCommands.TURN_ON_LED)
-        # self.lock.release()
+        # msg = input("type a message to send: ")
+        socket_msg = self.socket.recv(255)
+        # with self.lock:
+        # self.rx_thread.stop()
+        # self.antenna.send(msg)
+        self.antenna.send(socket_msg)
 
-    def send_cmd(self, cmd, delay=.5):
-        print("SEND: %s" % cmd)
-        self.write_line(cmd)
-        time.sleep(delay)
+    def send_cmd(self, command, delay=.5):
+        self.antenna.send_cmd(command, delay)

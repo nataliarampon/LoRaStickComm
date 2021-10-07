@@ -1,35 +1,44 @@
 #!/usr/bin/env python3
 
-from commands import *
+import time
+import logging
+
+from antenna import Antenna
+from commands import LoraCommands
 
 class LoraStick(Antenna):
 
     def __init__(self, transport):
         self.transport = transport
 
-    def setup(self, transport):
-        self.send_cmd(GET_VERSION)
-        self.send_cmd(START_RADIO_OP)
-        self.send_cmd(SET_RADIO_POWER.format(10))
+    def setup(self):
+        self.send_cmd(LoraCommands.GET_VERSION)
+        self.send_cmd(LoraCommands.GET_RADIO_MODE)
+        self.send_cmd(LoraCommands.GET_RADIO_FREQUENCY)
+        self.send_cmd(LoraCommands.GET_RADIO_SPREADING_FACTOR)
+        self.send_cmd(LoraCommands.START_RADIO_OP)
+        self.send_cmd(LoraCommands.SET_RADIO_POWER.format(10))
     
     def enter_rx_mode(self):
-        self.send_cmd(START_RADIO_OP)
-        self.send_cmd(DISABLE_TIMEOUT)
-        self.send_cmd(SET_CONTINUOUS_RADIO_RECEPTION)
+        self.send_cmd(LoraCommands.DISABLE_TIMEOUT)
+        self.send_cmd(LoraCommands.SET_CONTINUOUS_RADIO_RECEPTION)
     
     def enter_tx_mode(self):
-        self.send_cmd(START_RADIO_OP)
+        self.send_cmd(LoraCommands.START_RADIO_OP)
 
     def send(self, data):
-        txmsg = RADIO_DATA_TRANSFER.format(msg.encode("utf-8").hex())
-        self.send_cmd(txmsg)
+        tx_msg = LoraCommands.RADIO_DATA_TRANSFER.format(data.encode("utf-8").hex())
+        self.send_cmd(tx_msg)
     
     def decode_received_data(self, data):
-        if data.find(RADIO_RADIO_DATA_RECEIVED) == 0:
+        if data.find(LoraCommands.RADIO_RADIO_DATA_RECEIVED) == 0:
           data = data.split(' ', 1)[1].strip()
-          print("message received: {} ({})".format(data, bytes.fromhex(data).decode("utf-8")))
-        time.sleep(.1)
+          logging.debug("[LoraStick] Message Received: {} ({})".format(data, bytes.fromhex(data).decode("utf-8")))
+        bytes_data = bytes.fromhex(data)
+        return bytes_data
     
-    def send_cmd(self, cmd, delay=.5):
-        self.transport.write(('%s\r\n' % cmd).encode('UTF-8'))
+    def send_cmd(self, command, delay=.5):
+        logging.debug("[Sender] SEND: %s" % command)
+        # self.transport.write(('%s\r\n' % command).encode('UTF-8'))
+        self.write_line(command)
         time.sleep(delay)
