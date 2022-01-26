@@ -16,8 +16,7 @@ class Sender(LineReader):
     def connection_made(self, transport):
         logging.debug("[Sender] Connection Made")
         self.transport = transport
-        self.antenna = LoraStick(self)
-        self.antenna.setup()
+        self.antenna = LoraStick(self, "Sender")
 
     def handle_line(self, data):
         if data == LoraCommands.RADIO_DATA_OK:
@@ -30,12 +29,13 @@ class Sender(LineReader):
         logging.debug("[Sender] Port Closed")
 
     def tx(self):
-        # msg = input("type a message to send: ")
-        socket_msg = self.socket.recv(255)
+        msg = input("type a message to send: ")
+        # socket_msg = self.socket.recv(255)
         # with self.lock:
-        # self.rx_thread.stop()
-        # self.antenna.send(msg)
-        self.antenna.send(socket_msg)
+        logging.debug("[Sender] Stopping reader thread");
+        self.rx_thread.stop()
+        self.antenna.send(msg)
+        # self.antenna.send(socket_msg)
 
     def send_cmd(self, command, delay=.5):
         self.antenna.send_cmd(command, delay)
