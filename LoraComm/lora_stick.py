@@ -9,8 +9,9 @@ from commands import LoraCommands
 
 class LoraStick(Antenna):
 
-    def __init__(self, line_reader: LineReader):
+    def __init__(self, line_reader: LineReader, communicator_type):
         self.line = line_reader
+        self.communicator_type = communicator_type
 
     def setup(self):
         self.send_cmd(LoraCommands.GET_VERSION)
@@ -39,6 +40,6 @@ class LoraStick(Antenna):
         return bytes_data
     
     def send_cmd(self, command, delay=.5):
-        logging.debug("[Sender] SEND: %s" % command)
+        logging.debug("[%s] SEND: %s" % (self.communicator_type, command))
         self.line.write_line(command)
         time.sleep(delay)
