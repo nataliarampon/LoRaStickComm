@@ -44,7 +44,7 @@ This project was created having Unix operating systems in mind.
 ## How to run
 <details>
   <summary>Running instructions</summary>
-  To test the project using a virtual port (using `run_virtual_port_linux.sh` or `run_virtual_port_macos.sh`):
+  To test the project using a virtual port:
 
   ```
   sudo su
