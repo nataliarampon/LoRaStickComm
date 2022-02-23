@@ -3,7 +3,10 @@ class LoraCommands:
     ## Returns the firmware version and release date in format: "RN2903 X.Y.Z MMM DD YYYY HH:MM:SS"
     GET_VERSION = 'sys get ver'
 
-    ## Sets the LoRA functionality to radio
+    ## Resets LoRa stack
+    RESET_STACK = 'mac reset'
+
+    ## Sets the LoRA functionality to radio (needs to be done before anything else)
     START_RADIO_OP = 'mac pause'
 
     ## Sets the radio pwr to the given value in dB (range from 2dB to 20dB)
@@ -25,10 +28,16 @@ class LoraCommands:
     DISABLE_TIMEOUT = 'radio set wdt 0'
 
     ## Turns the LoRa stick LED on
-    TURN_ON_LED = 'sys set pindig GPIO10 0'
+    TURN_OFF_RED_LED = 'sys set pindig GPIO11 0'
 
     ## Turns the LoRa stick LED off
-    TURN_OFF_LED = 'sys set pindig GPIO10 1'
+    TURN_ON_RED_LED = 'sys set pindig GPIO11 1'
+
+    ## Turns the LoRa stick LED on
+    TURN_OFF_BLUE_LED = 'sys set pindig GPIO10 0'
+
+    ## Turns the LoRa stick LED off
+    TURN_ON_BLUE_LED = 'sys set pindig GPIO10 1'
 
     ## Data was successfully received
     RADIO_DATA_OK = 'ok'
