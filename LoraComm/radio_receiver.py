@@ -18,6 +18,7 @@ class Receiver(LineReader):
         self.antenna = LoraStick(self, "Receiver")
         self.antenna.setup()
         self.antenna.enter_rx_mode()
+        self.send_cmd(LoraCommands.TURN_ON_RED_LED)
 
     def handle_line(self, data):
         if data == LoraCommands.RADIO_DATA_OK or data == LoraCommands.RADIO_LINE_BUSY:
@@ -27,15 +28,17 @@ class Receiver(LineReader):
             return
 
         logging.debug("[Receiver] Data Received: %s" % data)
-        bytes_data = self.antenna.decode_received_data(data)
-        # self.socket.send(bytes_data)
-        time.sleep(.1)
-        self.antenna.enter_rx_mode()
+        try:
+            bytes_data = self.antenna.decode_received_data(data)
+            # self.socket.send(bytes_data)
+            self.send_cmd(LoraCommands.SET_CONTINUOUS_RADIO_RECEPTION)
+        except:
+            logging.error("[Receiver] Error decoding the received data [%s]" % data)
 
     def connection_lost(self, exception):
         if exception:
             logging.error(exception)
-        logging.debug("[Receiver] Port Closed")
+        logging.debug("[Receiver] Thread stopped")
 
     def send_cmd(self, command, delay=.5):
         self.antenna.send_cmd(command, delay)

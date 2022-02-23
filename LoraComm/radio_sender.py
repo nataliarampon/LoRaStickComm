@@ -11,7 +11,6 @@ class Sender(LineReader):
     def setup_thread(self, rx_thread, socket):
         self.rx_thread = rx_thread
         self.socket = socket
-    #     self.lock = lock
 
     def connection_made(self, transport):
         logging.debug("[Sender] Connection Made")
@@ -26,16 +25,15 @@ class Sender(LineReader):
     def connection_lost(self, exception):
         if exception:
             logging.error(exception)
-        logging.debug("[Sender] Port Closed")
+        logging.debug("[Sender] Thread stopped")
 
     def tx(self):
         msg = input("type a message to send: ")
         # socket_msg = self.socket.recv(255)
-        # with self.lock:
         logging.debug("[Sender] Stopping reader thread");
         self.rx_thread.stop()
         self.antenna.send(msg)
         # self.antenna.send(socket_msg)
 
-    def send_cmd(self, command, delay=.5):
+    def send_cmd(self, command, delay=100):
         self.antenna.send_cmd(command, delay)

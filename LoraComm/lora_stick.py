@@ -14,23 +14,21 @@ class LoraStick(Antenna):
         self.communicator_type = communicator_type
 
     def setup(self):
-        self.send_cmd(LoraCommands.GET_VERSION)
-        self.send_cmd(LoraCommands.GET_RADIO_MODE)
-        self.send_cmd(LoraCommands.GET_RADIO_FREQUENCY)
-        self.send_cmd(LoraCommands.GET_RADIO_SPREADING_FACTOR)
+        self.send_cmd(LoraCommands.RESET_STACK)
         self.send_cmd(LoraCommands.START_RADIO_OP)
         self.send_cmd(LoraCommands.SET_RADIO_POWER.format(10))
     
     def enter_rx_mode(self):
-        self.send_cmd(LoraCommands.DISABLE_TIMEOUT)
         self.send_cmd(LoraCommands.SET_CONTINUOUS_RADIO_RECEPTION)
     
     def enter_tx_mode(self):
         self.send_cmd(LoraCommands.START_RADIO_OP)
 
     def send(self, data):
+        self.send_cmd(LoraCommands.TURN_OFF_RED_LED)
         tx_msg = LoraCommands.RADIO_DATA_TRANSFER.format(data.encode("utf-8").hex())
         self.send_cmd(tx_msg)
+        self.send_cmd(LoraCommands.TURN_ON_RED_LED)
     
     def decode_received_data(self, data):
         if data.find(LoraCommands.RADIO_RADIO_DATA_RECEIVED) == 0:
