@@ -56,7 +56,14 @@ This project was created having Unix operating systems in mind.
 
   ```
   sudo su
-  make PORT=<port> run
+  make run
+  ```
+
+  To run the project in interactive mode, i.e. sending messages types on the terminal:
+
+  ```
+  sudo su
+  make interactive
   ```
 </details>
 
