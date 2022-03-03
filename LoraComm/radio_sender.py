@@ -6,11 +6,14 @@ from serial.threaded import LineReader
 from commands import LoraCommands
 from lora_stick import LoraStick
 
+LOSTIK_PACKET_SIZE = 255
+
 class Sender(LineReader):
 
-    def setup_thread(self, rx_thread, socket):
+    def setup_thread(self, rx_thread, socket, interactive):
         self.rx_thread = rx_thread
         self.socket = socket
+        self.isInteractiveMode = interactive
 
     def connection_made(self, transport):
         logging.debug("[Sender] Connection Made")
@@ -28,12 +31,13 @@ class Sender(LineReader):
         logging.debug("[Sender] Thread stopped")
 
     def tx(self):
-        msg = input("type a message to send: ")
-        # socket_msg = self.socket.recv(255)
-        logging.debug("[Sender] Stopping reader thread");
+        if self.isInteractiveMode:
+            msg = input("Type a message to send: ")
+        else:
+            msg = self.socket.recv(LOSTIK_PACKET_SIZE)
+        logging.debug("[Sender] Stopping reader thread")
         self.rx_thread.stop()
         self.antenna.send(msg)
-        # self.antenna.send(socket_msg)
 
     def send_cmd(self, command, delay=100):
         self.antenna.send_cmd(command, delay)

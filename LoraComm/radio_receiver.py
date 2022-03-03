@@ -9,8 +9,9 @@ from lora_stick import LoraStick
 
 class Receiver(LineReader):
 
-    def setup_thread(self, socket):
+    def setup_thread(self, socket, interactive):
         self.socket = socket
+        self.isInteractiveMode = interactive
 
     def connection_made(self, transport):
         logging.debug("[Receiver] Connection Made")
@@ -29,8 +30,9 @@ class Receiver(LineReader):
 
         logging.debug("[Receiver] Data Received: %s" % data)
         try:
-            bytes_data = self.antenna.decode_received_data(data)
-            # self.socket.send(bytes_data)
+            if self.isInteractiveMode:
+                bytes_data = self.antenna.decode_received_data(data)
+                self.socket.send(bytes_data)
             self.send_cmd(LoraCommands.SET_CONTINUOUS_RADIO_RECEPTION)
         except:
             logging.error("[Receiver] Error decoding the received data [%s]" % data)
