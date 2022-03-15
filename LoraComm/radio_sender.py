@@ -5,6 +5,7 @@ import logging
 from serial.threaded import LineReader
 from commands import LoraCommands
 from lora_stick import LoraStick
+from utils import *
 
 LOSTIK_PACKET_SIZE = 255
 
@@ -13,6 +14,8 @@ class Sender(LineReader):
     def setup_thread(self, rx_thread, interactive):
         self.rx_thread = rx_thread
         self.isInteractiveMode = interactive
+        if self.isInteractiveMode:
+            receivePacket(self.tx)
 
     def connection_made(self, transport):
         logging.debug("[Sender] Connection Made")

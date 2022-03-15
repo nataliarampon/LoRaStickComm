@@ -8,6 +8,8 @@ from serial.threaded import ReaderThread
 from radio_receiver import *
 from radio_sender import *
 
+TEST_HOST_IP =" 10.0.2.2"
+
 logging.basicConfig(level=logging.DEBUG)
 parser = argparse.ArgumentParser(description='LoRa Radio mode receiver.')
 parser.add_argument('port', help="Receiving serial port descriptor")
@@ -18,7 +20,7 @@ serial = serial.Serial(args.port, baudrate=57600)
 
 thread_rx = ReaderThread(serial, Receiver)
 thread_rx.start()
-thread_rx.protocol.setup_thread(args.interactive)
+thread_rx.protocol.setup_thread(args.interactive, TEST_HOST_IP)
 
 time.sleep(4);
 

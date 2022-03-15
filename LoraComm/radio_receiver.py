@@ -6,11 +6,13 @@ from serial.threaded import LineReader
 
 from commands import LoraCommands
 from lora_stick import LoraStick
+from utils import *
 
 class Receiver(LineReader):
 
-    def setup_thread(self, interactive):
+    def setup_thread(self, interactive, dest_ip = ""):
         self.isInteractiveMode = interactive
+        self.dest_ip = dest_ip
 
     def connection_made(self, transport):
         logging.debug("[Receiver] Connection Made")
@@ -31,6 +33,7 @@ class Receiver(LineReader):
         try:
             if self.isInteractiveMode:
                 bytes_data = self.antenna.decode_received_data(data)
+                sendPacket(bytes_data, self.dest_ip)
             self.send_cmd(LoraCommands.SET_CONTINUOUS_RADIO_RECEPTION)
         except:
             logging.error("[Receiver] Error decoding the received data [%s]" % data)
