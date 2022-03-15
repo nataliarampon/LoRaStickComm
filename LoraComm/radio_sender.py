@@ -10,9 +10,8 @@ LOSTIK_PACKET_SIZE = 255
 
 class Sender(LineReader):
 
-    def setup_thread(self, rx_thread, socket, interactive):
+    def setup_thread(self, rx_thread, interactive):
         self.rx_thread = rx_thread
-        self.socket = socket
         self.isInteractiveMode = interactive
 
     def connection_made(self, transport):
@@ -33,8 +32,6 @@ class Sender(LineReader):
     def tx(self):
         if self.isInteractiveMode:
             msg = input("Type a message to send: ")
-        else:
-            msg = self.socket.recv(LOSTIK_PACKET_SIZE)
         logging.debug("[Sender] Stopping reader thread")
         self.rx_thread.stop()
         self.antenna.send(msg)
