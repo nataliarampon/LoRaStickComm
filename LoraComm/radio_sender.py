@@ -14,7 +14,7 @@ class Sender(LineReader):
     def setup_thread(self, rx_thread, interactive):
         self.rx_thread = rx_thread
         self.isInteractiveMode = interactive
-        if self.isInteractiveMode:
+        if not self.isInteractiveMode:
             receivePacket(self.tx)
 
     def connection_made(self, transport):

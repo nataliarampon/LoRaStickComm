@@ -12,7 +12,7 @@ MAC_BROADCAST = 'ff:ff:ff:ff:ff:ff'
 def get_if():
     ifs = get_if_list()
     iface = None	# Example of interface name for mininet hosts: h1-eth0
-    for initerface in get_if_list():
+    for interface in get_if_list():
         if "eth0" in interface:
             iface = interface
             break;
@@ -26,8 +26,8 @@ def sendPacket(message, dest_ip, protocol = UDP_PROTOCOL):
     iface = get_if()
     logging.debug("Sending on interface %s to %s" % (iface, str(addr)))
 
-    pkt =  Ether(src = get_if_hwaddr(iface), dst = MAC_BROADCAST)
-    pkt = pkt / IP(dst =a ddr)
+    pkt = Ether(src = get_if_hwaddr(iface), dst = MAC_BROADCAST)
+    pkt = pkt / IP(dst = addr)
     if protocol == UDP_PROTOCOL:
         pkt = UDP(dport = 1234, sport = random.randint(49152,65535))
     else:

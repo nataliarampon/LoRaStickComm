@@ -8,7 +8,7 @@ from serial.threaded import ReaderThread
 from radio_receiver import *
 from radio_sender import *
 
-TEST_HOST_IP =" 10.0.2.2"
+TEST_HOST_IP ="10.0.2.2"
 
 logging.basicConfig(level=logging.DEBUG)
 parser = argparse.ArgumentParser(description='LoRa Radio mode receiver.')
