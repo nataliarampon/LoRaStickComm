@@ -26,12 +26,13 @@ time.sleep(4);
 
 thread_tx = ReaderThread(serial, Sender)
 thread_tx.start()
-thread_tx.protocol.setup_thread(thread_rx, args.interactive)
+thread_tx.protocol.setup_thread(thread_rx, args.interactive, TEST_HOST_IP)
 
 time.sleep(4);
 
-while(1):
-    thread_tx.protocol.tx()
-    thread_rx = ReaderThread(serial, Receiver)
-    thread_rx.start()
-    thread_rx.protocol.setup_thread()
+if args.interactive:
+    while True:
+        thread_tx.protocol.tx()
+
+while True:
+    pass

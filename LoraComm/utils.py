@@ -10,7 +10,6 @@ TCP_PROTOCOL = 2
 MAC_BROADCAST = 'ff:ff:ff:ff:ff:ff'
 
 def get_if():
-    ifs = get_if_list()
     iface = None	# Example of interface name for mininet hosts: h1-eth0
     for interface in get_if_list():
         if "eth0" in interface:
@@ -38,9 +37,9 @@ def sendPacket(message, dest_ip, protocol = UDP_PROTOCOL):
 
 def receivePacket(tx_function, protocol = UDP_PROTOCOL):
     iface = get_if()
-    sniff(iface = iface, prn = lambda pkt: handle_pkt(pkt, tx_function, protocol))
+    sniff(iface = iface, prn = lambda pkt: handle_pkt(pkt, tx_function, iface, protocol))
 
-def handle_pkt(packet, tx_function, protocol = UDP_PROTOCOL):
+def handle_pkt(packet, tx_function, iface, protocol = UDP_PROTOCOL):
     if IP in packet:
         # Ignore packets emitted from same MAC
         if get_if_hwaddr(iface) == packet[Ether].src:
