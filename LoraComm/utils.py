@@ -2,21 +2,27 @@
 
 import socket
 import sys
+import logging
+import random
 
-from scapy.all import IP, UDP, TCP, Ether, get_if_hwaddr, get_if_list, sendp, sniff
+from scapy.all import IP, UDP, TCP, Ether, get_if_hwaddr, get_if_list, sendp, AsyncSniffer
 
 UDP_PROTOCOL = 1
 TCP_PROTOCOL = 2
 MAC_BROADCAST = 'ff:ff:ff:ff:ff:ff'
+HOST_INTERFACE = "eth0"
+
+def keep_alive():
+    return
 
 def get_if():
-    iface = None	# Example of interface name for mininet hosts: h1-eth0
+    iface = None	# Example of interface name for mininet hosts: s1-eth1
     for interface in get_if_list():
-        if "eth0" in interface:
+        if HOST_INTERFACE in interface:
             iface = interface
             break;
     if not iface:
-        print("Cannot find eth0 interface in any host")
+        logging.debug("Cannot find eth1 interface in any host")
         exit(1)
     return iface
 
@@ -37,7 +43,7 @@ def sendPacket(message, dest_ip, protocol = UDP_PROTOCOL):
 
 def receivePacket(tx_function, protocol = UDP_PROTOCOL):
     iface = get_if()
-    sniff(iface = iface, prn = lambda pkt: handle_pkt(pkt, tx_function, iface, protocol))
+    AsyncSniffer(iface = iface, prn = lambda pkt: handle_pkt(pkt, tx_function, iface, protocol))
 
 def handle_pkt(packet, tx_function, iface, protocol = UDP_PROTOCOL):
     if IP in packet:
@@ -50,11 +56,7 @@ def handle_pkt(packet, tx_function, iface, protocol = UDP_PROTOCOL):
         proto = packet[IP].proto
 
         if protocol == UDP_PROTOCOL and UDP in packet:
-            sport = packet[UDP].sport
-            dport = packet[UDP].dport
             tx_function(packet[UDP].payload)
 
         if protocol == TCP_PROTOCOL and TCP in packet:
-            sport = packet[TCP].sport
-            dport = packet[TCP].dport
             tx_function(packet[TCP].payload)

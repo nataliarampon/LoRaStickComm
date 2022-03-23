@@ -13,13 +13,9 @@ LOSTIK_PACKET_SIZE = 255
 
 class Sender(LineReader):
 
-    def setup_thread(self, rx_thread, interactive, dest_ip = ""):
+    def setup_thread(self, rx_thread, interactive):
         self.rx_thread = rx_thread
         self.isInteractiveMode = interactive
-        self.dest_ip = dest_ip
-        logging.debug("Interactive mode: %s" % self.isInteractiveMode)
-        # if not self.isInteractiveMode:
-            # receivePacket(self.tx)
 
     def connection_made(self, transport):
         logging.debug("[Sender] Connection Made")
@@ -27,20 +23,9 @@ class Sender(LineReader):
         self.antenna = LoraStick(self, "Sender")
 
     def handle_line(self, data):
-        if data == LoraCommands.RADIO_DATA_OK or data == LoraCommands.RADIO_LINE_BUSY:
+        if data == LoraCommands.RADIO_DATA_OK:
             return
-        if data == LoraCommands.RADIO_DATA_ERROR:
-            self.antenna.enter_rx_mode()
-            return
-
         logging.debug("[Sender] Data Received: %s" % data)
-        try:
-            if self.isInteractiveMode:
-                bytes_data = self.antenna.decode_received_data(data)
-                sendPacket(bytes_data, self.dest_ip)
-            self.send_cmd(LoraCommands.SET_CONTINUOUS_RADIO_RECEPTION)
-        except:
-            logging.error("[Sender] Error decoding the received data [%s]" % data)
 
     def connection_lost(self, exception):
         if exception:
@@ -56,9 +41,5 @@ class Sender(LineReader):
         self.rx_thread.stop()
         self.antenna.send(msg)
 
-        self.rx_thread = ReaderThread(self.rx_thread.serial, Receiver)
-        self.rx_thread.start()
-        self.rx_thread.protocol.setup_thread(self.isInteractiveMode, self.dest_ip)
-
-    def send_cmd(self, command, delay=100):
+    def send_cmd(self, command, delay=.5):
         self.antenna.send_cmd(command, delay)

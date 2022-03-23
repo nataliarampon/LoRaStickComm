@@ -33,8 +33,8 @@ class LoraStick(Antenna):
     def decode_received_data(self, data):
         if data.find(LoraCommands.RADIO_RADIO_DATA_RECEIVED) == 0:
           data = data.split(' ', 1)[1].strip()
-          logging.debug("[LoraStick] Message Received: {} ({})".format(data, bytes.fromhex(data).decode("utf-8")))
-        bytes_data = bytes.fromhex(data)
+        logging.debug("[LoraStick] Message Received: {} ({})".format(data, bytes.fromhex(data).decode("utf-8")))
+        bytes_data = bytes.fromhex(data).decode("utf-8")
         return bytes_data
     
     def send_cmd(self, command, delay=.5):

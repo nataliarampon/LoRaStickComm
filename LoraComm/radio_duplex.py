@@ -7,6 +7,7 @@ from serial.threaded import ReaderThread
 
 from radio_receiver import *
 from radio_sender import *
+from radio import *
 
 TEST_HOST_IP ="10.0.2.2"
 
@@ -18,21 +19,27 @@ args = parser.parse_args()
 
 serial = serial.Serial(args.port, baudrate=57600)
 
-thread_rx = ReaderThread(serial, Receiver)
-thread_rx.start()
-thread_rx.protocol.setup_thread(args.interactive, TEST_HOST_IP)
-
-time.sleep(4);
-
-thread_tx = ReaderThread(serial, Sender)
-thread_tx.start()
-thread_tx.protocol.setup_thread(thread_rx, args.interactive, TEST_HOST_IP)
-
-time.sleep(4);
-
 if args.interactive:
+    thread_rx = ReaderThread(serial, Receiver)
+    thread_rx.start()
+    thread_rx.protocol.setup_thread(args.interactive, TEST_HOST_IP)
+
+    time.sleep(4);
+
+    thread_tx = ReaderThread(serial, Sender)
+    thread_tx.start()
+    thread_tx.protocol.setup_thread(thread_rx, args.interactive)
+
+    time.sleep(4);
+
     while True:
         thread_tx.protocol.tx()
-
-while True:
-    pass
+        thread_tx = ReaderThread(serial, Sender)
+        thread_tx.start()
+        thread_tx.protocol.setup_thread(thread_rx, args.interactive)
+else:
+    thread_rx = ReaderThread(serial, Radio)
+    thread_rx.start()
+    thread_rx.protocol.setup_thread(TEST_HOST_IP)
+    while True:
+        keep_alive()
