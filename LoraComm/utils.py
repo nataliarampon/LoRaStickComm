@@ -34,9 +34,9 @@ def sendPacket(message, dest_ip, protocol = UDP_PROTOCOL):
     pkt = Ether(src = get_if_hwaddr(iface), dst = MAC_BROADCAST)
     pkt = pkt / IP(dst = addr)
     if protocol == UDP_PROTOCOL:
-        pkt = UDP(dport = 1234, sport = random.randint(49152,65535))
+        pkt = pkt / UDP(dport = 1234, sport = random.randint(49152,65535))
     else:
-        pkt = TCP(dport = 1234, sport = random.randint(49152,65535))
+        pkt = pkt / TCP(dport = 1234, sport = random.randint(49152,65535))
     pkt = pkt / message
     pkt.show2()
     sendp(pkt, iface = iface, verbose = False)
