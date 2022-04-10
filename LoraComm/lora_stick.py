@@ -25,8 +25,13 @@ class LoraStick(Antenna):
         self.send_cmd(LoraCommands.START_RADIO_OP)
 
     def send(self, data):
+        print("Data: %s" % data)
         self.send_cmd(LoraCommands.TURN_OFF_RED_LED)
-        tx_msg = LoraCommands.RADIO_DATA_TRANSFER.format(data.encode("utf-8").hex())
+        if (isinstance(data, str)):
+            data = data.encode("utf-8").hex()
+        else:
+            data = data.decode("ascii")
+        tx_msg = LoraCommands.RADIO_DATA_TRANSFER.format(data)
         self.send_cmd(tx_msg)
         self.send_cmd(LoraCommands.TURN_ON_RED_LED)
     

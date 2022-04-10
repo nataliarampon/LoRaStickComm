@@ -5,7 +5,7 @@ import sys
 import logging
 import random
 
-from scapy.all import IP, UDP, TCP, Ether, get_if_hwaddr, get_if_list, sendp, AsyncSniffer
+from scapy.all import IP, UDP, TCP, Ether, get_if_hwaddr, get_if_addr, get_if_list, sendp, AsyncSniffer, sniff, bytes_hex
 
 UDP_PROTOCOL = 1
 TCP_PROTOCOL = 2
@@ -22,7 +22,7 @@ def get_if():
             iface = interface
             break;
     if not iface:
-        logging.debug("Cannot find eth1 interface in any host")
+        logging.debug("Cannot find eth interface in any host")
         exit(1)
     return iface
 
@@ -43,20 +43,18 @@ def sendPacket(message, dest_ip, protocol = UDP_PROTOCOL):
 
 def receivePacket(tx_function, protocol = UDP_PROTOCOL):
     iface = get_if()
-    AsyncSniffer(iface = iface, prn = lambda pkt: handle_pkt(pkt, tx_function, iface, protocol))
+    logging.debug("Sniffing interface: [%s]" % iface)
+    s = AsyncSniffer(iface = iface, prn = lambda pkt: handle_pkt(pkt, tx_function, iface, protocol))
+    s.start()
 
 def handle_pkt(packet, tx_function, iface, protocol = UDP_PROTOCOL):
     if IP in packet:
-        # Ignore packets emitted from same MAC
-        if get_if_hwaddr(iface) == packet[Ether].src:
+        # Ignore packets emitted to host
+        if get_if_addr(iface) == packet[IP].dst:
             return
 
-        src_ip = packet[IP].src
-        dst_ip = packet[IP].dst
-        proto = packet[IP].proto
-
         if protocol == UDP_PROTOCOL and UDP in packet:
-            tx_function(packet[UDP].payload)
+            tx_function(bytes_hex(packet))
 
         if protocol == TCP_PROTOCOL and TCP in packet:
-            tx_function(packet[TCP].payload)
+            tx_function(bytes_hex(packet))
