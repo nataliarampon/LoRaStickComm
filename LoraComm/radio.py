@@ -27,7 +27,6 @@ class Radio(LineReader):
         if data == LoraCommands.RADIO_DATA_OK or data == LoraCommands.RADIO_LINE_BUSY:
             return
         if data == data == LoraCommands.RADIO_DATA_ERROR:
-            self.antenna.setup()
             self.antenna.enter_rx_mode()
         if LoraCommands.RADIO_RADIO_DATA_RECEIVED not in data:
             return

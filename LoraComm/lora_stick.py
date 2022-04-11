@@ -31,7 +31,9 @@ class LoraStick(Antenna):
         else:
             data = data.decode("ascii")
         tx_msg = LoraCommands.RADIO_DATA_TRANSFER.format(data)
-        self.send_cmd(tx_msg)
+        self.setup()
+        self.send_cmd(tx_msg, delay = 1)
+        self.enter_rx_mode()
         self.send_cmd(LoraCommands.TURN_ON_RED_LED)
     
     def decode_received_data(self, data):

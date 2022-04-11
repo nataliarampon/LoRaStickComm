@@ -24,6 +24,9 @@ class LoraCommands:
     ## Sets the radio functionality to receive continuously
     SET_CONTINUOUS_RADIO_RECEPTION = 'radio rx 0'
 
+    ## Exits the radio functionality to receive continuously
+    EXIT_CONTINUOUS_RADIO_RECEPTION = 'radio rxstop'
+
     ## Disables the watchdog timer timeout for continuous reception
     DISABLE_TIMEOUT = 'radio set wdt 0'
 
