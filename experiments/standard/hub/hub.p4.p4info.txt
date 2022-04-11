@@ -1,0 +1,19 @@
+pkg_info {
+  arch: "v1model"
+}
+actions {
+  preamble {
+    id: 16839654
+    name: "MyIngress.multicast"
+    alias: "multicast"
+  }
+}
+actions {
+  preamble {
+    id: 16816924
+    name: "MyEgress.drop"
+    alias: "drop"
+  }
+}
+type_info {
+}
