@@ -292,9 +292,11 @@ class ExerciseRunner:
         print '    Initializing..................   '
         print '====================================='
 
-        h1 = self.net.hosts[0]
-        s1 = self.net.switches[0]
+        h1, h2 = self.net.hosts[0], self.net.hosts[1]
+        s1, s2, s3, s4 = self.net.switches[0], self.net.switches[1], self.net.switches[2], self.net.switches[3]
         h1.cmd('sudo ethtool -K h1-eth0 gro off gso off tso off')
+        h2.cmd('sudo ethtool -K h2-eth0 gro off gso off tso off')
+
         s1.cmd('sudo ethtool -K s1-eth1 gro off gso off tso off')
         s1.cmd('sudo ethtool -K s1-eth2 gro off gso off tso off')
         

@@ -285,26 +285,25 @@ class ExerciseRunner:
 
         ## Begin Scenario
         print '====================================='
-        print '    Starting... Waiting 10s   '
+        print '    Start antenna... Waiting 10s     '
         print '====================================='
         sleep(10)
         print '====================================='
         print '    Initializing..................   '
         print '====================================='
 
-        h1, h2  = self.net.hosts[0], self.net.hosts[1]
+        h1 = self.net.hosts[0]
         s1 = self.net.switches[0]
-        h1.cmd('sudo ethtool -K h1-eth0 gro off gso off tso off')
-        h4.cmd('sudo ethtool -K h2-eth0 gro off gso off tso off')
-        s1.cmd('sudo ethtool -K s1-eth1 gro off gso off tso off')
-        s1.cmd('sudo ethtool -K s1-eth2 gro off gso off tso off')
+        h1.cmdPrint('sudo ethtool -K h1-eth0 gro off gso off tso off')
+        s1.cmdPrint('sudo ethtool -K s1-eth1 gro off gso off tso off')
+        s1.cmdPrint('sudo ethtool -K s1-eth2 gro off gso off tso off')
         
-        h1.cmd('ping -c10 %s' % h4.IP())
-        h1.cmd('cp logs/* results/before/64k/STD/logs/')
-        h1.cmd('../experiments/scripts/clean/clean_logs.sh')
+        h1.cmdPrint('ping -c10 %s' % "10.0.2.1")
+        h1.cmdPrint('cp logs/* results/before/64k/STD/logs/')
+        h1.cmdPrint('../experiments/scripts/clean/clean_logs.sh')
 
-        h1.cmd('cp pcaps/* results/before/64k/STD/pcaps/')
-        h1.cmd('../experiments/scripts/clean/clean_pcaps.sh')
+        h1.cmdPrint('cp pcaps/* results/before/64k/STD/pcaps/')
+        h1.cmdPrint('../experiments/scripts/clean/clean_pcaps.sh')
         
         ##h1.cmd('../experiments/scripts/clean/clean_64STD.sh')
 
@@ -313,15 +312,15 @@ class ExerciseRunner:
         print ' Scenario1 UDP - 64k - Payload 128 Bytes '
         print '=========================================='
 
-        h1.cmd('iperf3 -4 -c %s -t 900 -i 30 -u -b 64k -l 128' % "10.0.2.2")
-        h1.cmd('killall iperf3')
+        h1.cmdPrint('iperf3 -4 -c %s -t 900 -i 30 -u -b 64k -l 128' % "10.0.2.1")
+        h1.cmdPrint('killall iperf3')
         sleep(5)
 
-        h1.cmd('cp logs/* results/scenario1/64k/STD/udp/logs/')
-        h1.cmd('../experiments/scripts/clean/clean_logs.sh')
+        h1.cmdPrint('cp logs/* results/scenario1/64k/STD/udp/logs/')
+        h1.cmdPrint('../experiments/scripts/clean/clean_logs.sh')
 
-        h1.cmd('cp pcaps/* results/scenario1/64k/STD/udp/pcaps/')
-        h1.cmd('../experiments/scripts/clean/clean_pcaps.sh')
+        h1.cmdPrint('cp pcaps/* results/scenario1/64k/STD/udp/pcaps/')
+        h1.cmdPrint('../experiments/scripts/clean/clean_pcaps.sh')
         """
         print '=========================================='
         print ' Scenario1 TCP - 64k - Payload 128 Bytes '

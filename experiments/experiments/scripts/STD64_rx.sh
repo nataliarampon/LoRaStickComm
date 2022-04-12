@@ -1,15 +1,14 @@
 #! /bin/bash
 
 echo 'Copying topology'
-cp ../experiments/scripts/topologies/topology64std.json ./topology.json
+cp ../experiments/scripts/topologies/topology64std_rx.json ./topology.json
 
 echo 'Copying run_exercise'
 cp ../experiments/scripts/run_exercise/run_exercise64std_rx.py ../utils/run_exercise.py
 
 echo 'Coping standard proto and controllers'
 cp ../standard/basic_tunnel.p4 ./ltp-proto.p4
-cp ../standard/s1-runtime-rx.json ./s1-runtime-rx.json
-cp ../standard/s1-runtime-tx.json ./s1-runtime-tx.json
+cp ../standard/s1-runtime-rx.json ./s1-runtime.json
 cp ../standard/s2-runtime.json ./s2-runtime.json
 cp ../standard/s3-runtime.json ./s3-runtime.json
 
