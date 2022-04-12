@@ -18,6 +18,8 @@ class Radio(LineReader):
         self.transport = transport
         self.antenna = LoraStick(self, "Receiver")
         self.antenna.setup()
+        self.antenna.send_cmd(LoraCommands.GET_RADIO_FREQUENCY)
+        self.antenna.send_cmd(LoraCommands.GET_RADIO_SPREADING_FACTOR)
         self.antenna.enter_rx_mode()
         self.send_cmd(LoraCommands.TURN_ON_RED_LED)
         receivePacket(self.tx)
@@ -26,8 +28,9 @@ class Radio(LineReader):
         logging.debug("[Receiver] Callback Received: %s" % data)
         if data == LoraCommands.RADIO_DATA_OK or data == LoraCommands.RADIO_LINE_BUSY:
             return
-        if data == data == LoraCommands.RADIO_DATA_ERROR:
+        if data == LoraCommands.RADIO_DATA_ERROR:
             self.antenna.enter_rx_mode()
+            return
         if LoraCommands.RADIO_RADIO_DATA_RECEIVED not in data:
             return
         logging.debug("[Receiver] Data Received: %s" % data)

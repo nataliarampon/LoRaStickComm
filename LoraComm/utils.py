@@ -9,16 +9,16 @@ from scapy.all import IP, UDP, TCP, Ether, get_if_hwaddr, get_if_addr, get_if_li
 
 UDP_PROTOCOL = 1
 TCP_PROTOCOL = 2
-MAC_BROADCAST = 'ff:ff:ff:ff:ff:ff'
-HOST_INTERFACE = "eth0"
+PORT_NUMER = 1
+SWITCH_INTERFACE = "s1-eth" + str(PORT_NUMER)
 
 def keep_alive():
     return
 
 def get_if():
-    iface = None	# Example of interface name for mininet hosts: s1-eth1
+    iface = None	# Example of interface name for mininet switches: s1-eth1
     for interface in get_if_list():
-        if HOST_INTERFACE in interface:
+        if SWITCH_INTERFACE in interface:
             iface = interface
             break;
     if not iface:
@@ -44,9 +44,4 @@ def handle_pkt(packet, tx_function, iface, protocol = UDP_PROTOCOL):
         # Ignore packets emitted to host
         if get_if_addr(iface) == packet[IP].dst:
             return
-
-        if protocol == UDP_PROTOCOL and UDP in packet:
-            tx_function(bytes_hex(packet))
-
-        if protocol == TCP_PROTOCOL and TCP in packet:
-            tx_function(bytes_hex(packet))
+    tx_function(bytes_hex(packet))

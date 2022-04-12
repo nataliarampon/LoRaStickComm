@@ -21,6 +21,9 @@ class LoraCommands:
     ## Gets radio spreading factor (values can be sf7, sf8, sf9, sf10, sf11, sf12)
     GET_RADIO_SPREADING_FACTOR = 'radio get sf'
 
+    ## Sets radio spreading factor (values can be sf7, sf8, sf9, sf10, sf11, sf12)
+    SET_RADIO_SPREADING_FACTOR = 'radio set sf {}'
+
     ## Sets the radio functionality to receive continuously
     SET_CONTINUOUS_RADIO_RECEPTION = 'radio rx 0'
 
