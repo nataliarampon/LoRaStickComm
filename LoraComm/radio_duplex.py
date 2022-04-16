@@ -17,7 +17,7 @@ parser.add_argument('port', help="Receiving serial port descriptor")
 parser.add_argument('--interactive', action="store_true", default=False, help="Runs in interactive mode, sending messages provided through the terminal")
 args = parser.parse_args()
 
-serial = serial.Serial(args.port, baudrate=57600)
+serial = serial.Serial(args.port, baudrate=57600, timeout=.5)
 
 if args.interactive:
     thread_rx = ReaderThread(serial, Receiver)
@@ -40,6 +40,5 @@ if args.interactive:
 else:
     thread_rx = ReaderThread(serial, Radio)
     thread_rx.start()
-    thread_rx.protocol.setup_thread(TEST_HOST_IP)
     while True:
         keep_alive()

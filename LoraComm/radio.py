@@ -2,21 +2,24 @@
 
 import time
 import logging
+import threading
 from serial.threaded import LineReader
 
 from commands import LoraCommands
 from lora_stick import LoraStick
 from utils import *
 
+lock = threading.Lock()
+
 class Radio(LineReader):
 
-    def setup_thread(self, dest_ip):
-        self.dest_ip = dest_ip
+    def setup_thread(self):
+        pass
 
     def connection_made(self, transport):
         logging.debug("[Receiver] Connection Made")
         self.transport = transport
-        self.antenna = LoraStick(self, "Receiver")
+        self.antenna = LoraStick(self, "Receiver", lock)
         self.antenna.setup()
         self.antenna.enter_rx_mode()
         receivePacket(self.tx)
@@ -37,8 +40,8 @@ class Radio(LineReader):
             bytes_data = self.antenna.decode_received_data(data)
         except:
             logging.error("[Receiver] Error decoding the received data [%s]" % data)
-        sendPacket(bytes_data, self.dest_ip)
-        self.send_cmd(LoraCommands.SET_CONTINUOUS_RADIO_RECEPTION)
+        sendPacket(bytes_data)
+        self.antenna.enter_rx_mode()
 
     def tx(self, message = ""):
         self.antenna.send(message)

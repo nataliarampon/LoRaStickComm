@@ -27,7 +27,7 @@ def get_if():
         exit(1)
     return iface
 
-def sendPacket(raw_packet, dest_ip, protocol = UDP_PROTOCOL):
+def sendPacket(raw_packet):
     iface = get_if()
     logging.debug("Sending on interface [%s]" % iface)
     packet = Ether(raw_packet)

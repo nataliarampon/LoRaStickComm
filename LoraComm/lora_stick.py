@@ -9,9 +9,10 @@ from commands import LoraCommands
 
 class LoraStick(Antenna):
 
-    def __init__(self, line_reader: LineReader, communicator_type):
+    def __init__(self, line_reader: LineReader, communicator_type, lock = None):
         self.line = line_reader
         self.communicator_type = communicator_type
+        self.lock = lock
 
     def setup(self):
         self.send_cmd(LoraCommands.RESET_STACK)
@@ -22,7 +23,10 @@ class LoraStick(Antenna):
 
     
     def enter_rx_mode(self):
-        self.send_cmd(LoraCommands.SET_CONTINUOUS_RADIO_RECEPTION)
+        with self.lock:
+            logging.debug("Acquired READ lock")
+            self.send_cmd(LoraCommands.SET_CONTINUOUS_RADIO_RECEPTION)
+            logging.debug("Released READ lock")
     
     def enter_tx_mode(self):
         self.send_cmd(LoraCommands.START_RADIO_OP)
@@ -33,10 +37,12 @@ class LoraStick(Antenna):
         else:
             data = data.decode("ascii")
         tx_msg = LoraCommands.RADIO_DATA_TRANSFER.format(data)
-        self.setup()
-        self.send_cmd(tx_msg, delay=0.00016510204081632654*len(tx_msg))
-        self.enter_rx_mode()
-        time.sleep(2*0.00026510204081632654*len(tx_msg))
+        with self.lock:
+            logging.debug("Acquired WRTE lock")
+            self.setup()
+            self.send_cmd(tx_msg, delay=0.001*len(tx_msg))
+            self.send_cmd(LoraCommands.SET_CONTINUOUS_RADIO_RECEPTION)
+            logging.debug("Released WRITE lock")
     
     def decode_received_data(self, data):
         if data.find(LoraCommands.RADIO_RADIO_DATA_RECEIVED) == 0:
@@ -44,7 +50,7 @@ class LoraStick(Antenna):
         bytes_data = bytes(bytearray.fromhex(data))
         return bytes_data
     
-    def send_cmd(self, command, delay=.1):
+    def send_cmd(self, command, delay=.01):
         logging.debug("[%s] SEND: %s" % (self.communicator_type, command))
         self.line.write_line(command)
         time.sleep(delay)
