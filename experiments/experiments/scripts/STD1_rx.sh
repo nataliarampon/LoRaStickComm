@@ -15,7 +15,6 @@ echo 'Copying topologies to scenario results'
 cp topology.json results/scenario1/1k/STD/
 cp topology.json results/scenario2/1k/STD/
 cp topology.json results/scenario3/1k/STD/
-cp topology.json results/scenario4/1k/STD/
 
 echo 'Starting topology'
 ./run-me.sh
