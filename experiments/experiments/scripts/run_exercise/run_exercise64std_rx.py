@@ -298,7 +298,6 @@ class ExerciseRunner:
         s1.cmd('sudo ethtool -K s1-eth1 gro off gso off tso off')
         s1.cmd('sudo ethtool -K s1-eth2 gro off gso off tso off')
         
-        h1.cmd('ping -c10 %s' % "10.0.2.1")
         h1.cmd('cp logs/* results/before/64k/STD/logs/')
         h1.cmd('../experiments/scripts/clean/clean_logs.sh')
 
