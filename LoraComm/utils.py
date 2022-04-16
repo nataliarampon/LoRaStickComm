@@ -34,23 +34,17 @@ def sendPacket(raw_packet, dest_ip, protocol = UDP_PROTOCOL):
     # packet.show2()
     sendp(packet, iface = iface, verbose = False)
 
-def sniffing(tx_function, protocol):
+def receivePacket(tx_function):
     iface = get_if()
     logging.debug("Sniffing interface: [%s]" % iface)
-    s = AsyncSniffer(iface = iface, prn = lambda pkt: handle_pkt(pkt, tx_function, iface, protocol))
+    s = AsyncSniffer(iface = iface, prn = lambda pkt: handle_pkt(pkt, tx_function, iface))
     s.start()
-    while True:
-        pass
-
-def receivePacket(tx_function, protocol = UDP_PROTOCOL):
-    thread = threading.Thread(target = sniffing, args=(tx_function, protocol))
-    thread.start()
     
 
-def handle_pkt(packet, tx_function, iface, protocol = UDP_PROTOCOL):
+def handle_pkt(packet, tx_function, iface):
     if IP in packet:
         # Ignore packets emitted to host
-        if get_if_addr(iface) == packet[IP].dst:
-        #if "10.0.1.1" == packet[IP].dst:
+        #if get_if_addr(iface) == packet[IP].dst:
+        if "10.0.1.1" == packet[IP].dst:
             return
     tx_function(bytes_hex(packet))
