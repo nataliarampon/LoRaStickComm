@@ -1,10 +1,10 @@
 #! /bin/bash
 
 echo 'Copying topology'
-cp ../experiments/scripts/topologies/topology64std_rx.json ./topology.json
+cp ../experiments/scripts/topologies/topology1std_rx.json ./topology.json
 
 echo 'Copying run_exercise'
-cp ../experiments/scripts/run_exercise/run_exercise64std_rx.py ../utils/run_exercise.py
+cp ../experiments/scripts/run_exercise/run_exercise1std_rx.py ../utils/run_exercise.py
 
 echo 'Coping standard proto and controllers'
 cp ../standard/basic_tunnel.p4 ./ltp-proto.p4
@@ -12,10 +12,10 @@ cp ../standard/s1-runtime-rx.json ./s1-runtime.json
 cp ../standard/s2-runtime.json ./s2-runtime.json
 
 echo 'Copying topologies to scenario results'
-cp topology.json results/scenario1/64k/STD/
-cp topology.json results/scenario2/64k/STD/
-cp topology.json results/scenario3/64k/STD/
-cp topology.json results/scenario4/64k/STD/
+cp topology.json results/scenario1/1k/STD/
+cp topology.json results/scenario2/1k/STD/
+cp topology.json results/scenario3/1k/STD/
+cp topology.json results/scenario4/1k/STD/
 
 echo 'Starting topology'
 ./run-me.sh

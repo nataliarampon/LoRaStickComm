@@ -298,28 +298,28 @@ class ExerciseRunner:
         s1.cmd('sudo ethtool -K s1-eth1 gro off gso off tso off')
         s1.cmd('sudo ethtool -K s1-eth2 gro off gso off tso off')
         
-        h1.cmd('cp logs/* results/before/64k/STD/logs/')
+        h1.cmd('cp logs/* results/before/1k/STD/logs/')
         h1.cmd('../experiments/scripts/clean/clean_logs.sh')
 
-        h1.cmd('cp pcaps/* results/before/64k/STD/pcaps/')
+        h1.cmd('cp pcaps/* results/before/1k/STD/pcaps/')
         h1.cmd('../experiments/scripts/clean/clean_pcaps.sh')
         
         ##h1.cmd('../experiments/scripts/clean/clean_64STD.sh')
 
         
         print '=========================================='
-        print ' Scenario1 UDP - 64k - Payload 128 Bytes '
+        print ' Scenario1 UDP - 1k - Payload 128 Bytes '
         print '=========================================='
 
-        h1.cmd('iperf3 -s -i 30 > results/scenario1/64k/STD-UDP-64k-128b.txt &')
+        h1.cmd('iperf3 -s -i 30 > results/scenario1/1k/STD-UDP-1k-128b.txt &')
         sleep(902)
         h1.cmd('killall iperf3')
         sleep(5)
 
-        h1.cmd('cp logs/* results/scenario1/64k/STD/udp/logs/')
+        h1.cmd('cp logs/* results/scenario1/1k/STD/udp/logs/')
         h1.cmd('../experiments/scripts/clean/clean_logs.sh')
 
-        h1.cmd('cp pcaps/* results/scenario1/64k/STD/udp/pcaps/')
+        h1.cmd('cp pcaps/* results/scenario1/1k/STD/udp/pcaps/')
         h1.cmd('../experiments/scripts/clean/clean_pcaps.sh')
         """
         print '=========================================='
