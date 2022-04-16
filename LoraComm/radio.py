@@ -19,7 +19,6 @@ class Radio(LineReader):
         self.antenna = LoraStick(self, "Receiver")
         self.antenna.setup()
         self.antenna.enter_rx_mode()
-        self.send_cmd(LoraCommands.TURN_ON_RED_LED)
         receivePacket(self.tx)
 
     def handle_line(self, data):
