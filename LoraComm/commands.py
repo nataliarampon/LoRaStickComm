@@ -24,6 +24,9 @@ class LoraCommands:
     ## Sets radio spreading factor (values can be sf7, sf8, sf9, sf10, sf11, sf12)
     SET_RADIO_SPREADING_FACTOR = 'radio set sf {}'
 
+    ## Sets radio bandwidth in kHz (values can be 125, 250, 500)
+    SET_RADIO_BANDWIDTH = 'radio set bw {}'
+
     ## Sets the radio functionality to receive continuously
     SET_CONTINUOUS_RADIO_RECEPTION = 'radio rx 0'
 

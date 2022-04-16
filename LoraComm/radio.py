@@ -18,8 +18,6 @@ class Radio(LineReader):
         self.transport = transport
         self.antenna = LoraStick(self, "Receiver")
         self.antenna.setup()
-        self.antenna.send_cmd(LoraCommands.GET_RADIO_FREQUENCY)
-        self.antenna.send_cmd(LoraCommands.GET_RADIO_SPREADING_FACTOR)
         self.antenna.enter_rx_mode()
         self.send_cmd(LoraCommands.TURN_ON_RED_LED)
         receivePacket(self.tx)
@@ -51,5 +49,5 @@ class Radio(LineReader):
             logging.error(exception)
         logging.debug("[Receiver] Thread stopped")
 
-    def send_cmd(self, command, delay=.5):
+    def send_cmd(self, command, delay=.05):
         self.antenna.send_cmd(command, delay)

@@ -18,6 +18,8 @@ class LoraStick(Antenna):
         self.send_cmd(LoraCommands.START_RADIO_OP)
         self.send_cmd(LoraCommands.SET_RADIO_POWER.format(10))
         self.send_cmd(LoraCommands.SET_RADIO_SPREADING_FACTOR.format('sf7'))
+        self.send_cmd(LoraCommands.SET_RADIO_BANDWIDTH.format('500'))
+
     
     def enter_rx_mode(self):
         self.send_cmd(LoraCommands.SET_CONTINUOUS_RADIO_RECEPTION)
@@ -33,9 +35,10 @@ class LoraStick(Antenna):
             data = data.decode("ascii")
         tx_msg = LoraCommands.RADIO_DATA_TRANSFER.format(data)
         self.setup()
-        self.send_cmd(tx_msg, delay=0.0026510204081632654*len(tx_msg))
+        self.send_cmd(tx_msg, delay=0.00016510204081632654*len(tx_msg))
         self.enter_rx_mode()
         self.send_cmd(LoraCommands.TURN_ON_RED_LED)
+        time.sleep(2*0.00026510204081632654*len(tx_msg))
     
     def decode_received_data(self, data):
         if data.find(LoraCommands.RADIO_RADIO_DATA_RECEIVED) == 0:
@@ -43,7 +46,7 @@ class LoraStick(Antenna):
         bytes_data = bytes(bytearray.fromhex(data))
         return bytes_data
     
-    def send_cmd(self, command, delay=.2):
+    def send_cmd(self, command, delay=.1):
         logging.debug("[%s] SEND: %s" % (self.communicator_type, command))
         self.line.write_line(command)
         time.sleep(delay)
