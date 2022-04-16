@@ -18,7 +18,7 @@ class LoraStick(Antenna):
         self.send_cmd(LoraCommands.START_RADIO_OP)
         self.send_cmd(LoraCommands.SET_RADIO_POWER.format(10))
         self.send_cmd(LoraCommands.SET_RADIO_SPREADING_FACTOR.format('sf7'))
-        self.send_cmd(LoraCommands.SET_RADIO_BANDWIDTH.format('500'))
+        self.send_cmd(LoraCommands.SET_RADIO_BANDWIDTH.format('250'))
 
     
     def enter_rx_mode(self):
