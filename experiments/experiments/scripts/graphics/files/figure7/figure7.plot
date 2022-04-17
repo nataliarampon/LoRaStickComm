@@ -7,7 +7,7 @@ set terminal postscript eps color lw 5 "Helvetica" 26
 #set style histogram errorbars #errorbars #rowstacked
 #set boxwidth 0.75
 
-set output "fig4.eps"
+set output "fig7.eps"
 
 #set datafile separator ","
 #set xtics ('Plano' 0.17,'RSA' 1.17,'Papanis' 2.15,'Proposta' 3.20)
@@ -27,12 +27,12 @@ set multiplot
 set grid ytics
 set key maxrows 3 ## font "Helvetica, 15"
 set xlabel "Time (sec)"      #### xlabel
-set ylabel "TCP Throughput (Kbps)"
+set ylabel "UDP Throughput (Kbps)"
 set title "\n"
-#set label 1 "Throughput TCP Link 1Kbps\n Payload 64 Bytes" at graph 0.5,1.225 center font "Helvetica, 30"
+#set label 1 "Throughput UDP Link 1Kbps\n Payload 64 Bytes" at graph 0.5,1.225 center font "Helvetica, 30"
 set xrange [0:900]
 set yrange [0:500]
-plot 'STD-TCP-1k-64b.txt' using 1:2 with lines lc rgb "orange" lw 2
+plot 'LTP-UDP-1k-64b.txt' using 1:2 with lines lc rgb "orange" lw 2
 
 unset grid
 unset multiplot
