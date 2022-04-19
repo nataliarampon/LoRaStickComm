@@ -13,6 +13,9 @@ echo 'Copying controllers'
 cp ../experiments/scripts/backup/s1controller.py ./s1controller.py
 cp ../experiments/scripts/backup/s2controller.py ./s2controller.py
 
+echo 'Copying switch runtimes'
+cp ../standard/s2-runtime.json ./s2-runtime.json
+
 echo 'Copying topologies to scenario results'
 cp topology.json results/scenario1/1k/LTP/
 cp topology.json results/scenario2/1k/LTP/

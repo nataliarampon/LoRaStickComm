@@ -2,17 +2,5 @@
   "target": "bmv2",
   "p4info": "build/ltp-proto.p4.p4info.txt",
   "bmv2_json": "build/ltp-proto.json",
-  "table_entries": [
-    {
-      "table": "MyIngress.ipv4_lpm",
-      "match": {
-        "hdr.ipv4.dstAddr": ["10.1.1.1", 32]
-      },
-      "action_name": "MyIngress.ipv4_forward",
-      "action_params": {
-        "dstAddr": "08:00:00:00:01:11",
-        "port": 0
-      }
-    }
-  ]
+  "table_entries": []
 }
