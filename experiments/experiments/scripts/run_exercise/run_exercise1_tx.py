@@ -308,10 +308,10 @@ class ExerciseRunner:
         ###h1.cmd('../experiments/scripts/clean/clean_64LTP.sh')
 
         print '=========================================='
-        print ' Scenario1 UDP - 1K - Payload 64 Bytes '
+        print ' Scenario1 UDP - 1K - Payload 88 Bytes '
         print '=========================================='
 
-        h1.cmd('iperf3 -4 -c %s -t 900 -i 30 -u -b 1k -l 64' % "10.0.2.1")
+        h1.cmd('iperf3 -4 -c %s -t 900 -i 30 -u -b 1k -l 88' % "10.0.2.1")
         h1.cmd('killall iperf3')
         sleep(5)
 
@@ -322,20 +322,6 @@ class ExerciseRunner:
         h1.cmd('../experiments/scripts/clean/clean_pcaps.sh')
         
         """ 
-        print '=========================================='
-        print ' Scenario1 TCP - 1K - Payload 64 Bytes '
-        print '=========================================='
-
-        h4.cmd('iperf3 -4 -c %s -t 900 -i 30 -b 1k -M 64' % "10.0.2.1")
-        h1.cmd('killall iperf3')
-        sleep(5)
-
-        h1.cmd('cp logs/* results/scenario1/1k/LTP/tcp/logs/')
-        h1.cmd('../experiments/scripts/clean/clean_logs.sh')
-
-        h1.cmd('cp pcaps/* results/scenario1/1k/LTP/tcp/pcaps/')
-        h1.cmd('../experiments/scripts/clean/clean_pcaps.sh')
-        
         print '=========================================='
         print ' Scenario2 UDP - 1K - Payload 128 Bytes '
         print '=========================================='
@@ -348,20 +334,6 @@ class ExerciseRunner:
         h1.cmd('../experiments/scripts/clean/clean_logs.sh')
 
         h1.cmd('cp pcaps/* results/scenario2/1k/LTP/udp/pcaps/')
-        h1.cmd('../experiments/scripts/clean/clean_pcaps.sh')
-        
-        print '=========================================='
-        print ' Scenario2 TCP - 1K - Payload 128 Bytes '
-        print '=========================================='
-
-        h4.cmd('iperf3 -4 -c %s -t 900 -i 30 -b 1k -M 128' % "10.0.2.1")
-        h1.cmd('killall iperf3')
-        sleep(5)
-
-        h1.cmd('cp logs/* results/scenario2/1k/LTP/tcp/logs/')
-        h1.cmd('../experiments/scripts/clean/clean_logs.sh')
-
-        h1.cmd('cp pcaps/* results/scenario2/1k/LTP/tcp/pcaps/')
         h1.cmd('../experiments/scripts/clean/clean_pcaps.sh')
 
         print '=========================================='
@@ -379,10 +351,38 @@ class ExerciseRunner:
         h1.cmd('../experiments/scripts/clean/clean_pcaps.sh')
         
         print '=========================================='
+        print ' Scenario1 TCP - 1K - Payload 88 Bytes '
+        print '=========================================='
+
+        h1.cmd('iperf3 -4 -c %s -t 900 -i 30 -b 1k -M 88' % "10.0.2.1")
+        h1.cmd('killall iperf3')
+        sleep(5)
+
+        h1.cmd('cp logs/* results/scenario1/1k/LTP/tcp/logs/')
+        h1.cmd('../experiments/scripts/clean/clean_logs.sh')
+
+        h1.cmd('cp pcaps/* results/scenario1/1k/LTP/tcp/pcaps/')
+        h1.cmd('../experiments/scripts/clean/clean_pcaps.sh')
+
+        print '=========================================='
+        print ' Scenario2 TCP - 1K - Payload 128 Bytes '
+        print '=========================================='
+
+        h1.cmd('iperf3 -4 -c %s -t 900 -i 30 -b 1k -M 128' % "10.0.2.1")
+        h1.cmd('killall iperf3')
+        sleep(5)
+
+        h1.cmd('cp logs/* results/scenario2/1k/LTP/tcp/logs/')
+        h1.cmd('../experiments/scripts/clean/clean_logs.sh')
+
+        h1.cmd('cp pcaps/* results/scenario2/1k/LTP/tcp/pcaps/')
+        h1.cmd('../experiments/scripts/clean/clean_pcaps.sh')
+
+        print '=========================================='
         print ' Scenario3 TCP - 1K - Payload 200 Bytes '
         print '=========================================='
 
-        h4.cmd('iperf3 -4 -c %s -t 900 -i 30 -b 1k -M 200' % "10.0.2.1")
+        h1.cmd('iperf3 -4 -c %s -t 900 -i 30 -b 1k -M 200' % "10.0.2.1")
         h1.cmd('killall iperf3')
         sleep(5)
 
