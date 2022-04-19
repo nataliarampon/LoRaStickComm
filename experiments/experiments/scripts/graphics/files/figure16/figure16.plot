@@ -29,11 +29,11 @@ set key maxrows 1 ## font "Helvetica, 15"
 set xlabel "Time (sec)"      #### xlabel
 set ylabel "TCP Throughput (Kbps)"
 set title "\n"
-#set label 1 "Throughput TCP Link 1Kbps\n Payload 64 Bytes" at graph 0.5,1.225 center font "Helvetica, 30"
+#set label 1 "Throughput TCP Link 1Kbps\n Payload 88 Bytes" at graph 0.5,1.225 center font "Helvetica, 30"
 set xrange [0:900]
 set yrange [0:500]
-plot 'STD-TCP-1k-64b.txt' using 1:2 title "Without LTP" with lines lc rgb "orange" lw 2,\
-     'LTP-TCP-1k-64b.txt' using 1:2 title "With LTP" with lines lc rgb "orange" lw 2
+plot 'STD-TCP-1k-88b.txt' using 1:2 title "Without LTP" with lines lc rgb "orange" lw 2,\
+     'LTP-TCP-1k-88b.txt' using 1:2 title "With LTP" with lines lc rgb "orange" lw 2
 
 unset grid
 unset multiplot

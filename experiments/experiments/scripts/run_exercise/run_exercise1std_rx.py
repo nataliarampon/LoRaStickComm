@@ -308,10 +308,10 @@ class ExerciseRunner:
 
         
         print '=========================================='
-        print ' Scenario1 UDP - 1k - Payload 64 Bytes '
+        print ' Scenario1 UDP - 1k - Payload 88 Bytes '
         print '=========================================='
 
-        h1.cmd('iperf3 -s -i 30 > results/scenario1/1k/STD-UDP-1k-64b.txt &')
+        h1.cmd('iperf3 -s -i 30 > results/scenario1/1k/STD-UDP-1k-88b.txt &')
         sleep(902)
         h1.cmd('killall iperf3')
         sleep(5)
@@ -323,10 +323,11 @@ class ExerciseRunner:
         h1.cmd('../experiments/scripts/clean/clean_pcaps.sh')
         """
         print '=========================================='
-        print ' Scenario1 TCP - 1k - Payload 64 Bytes '
+        print ' Scenario1 TCP - 1k - Payload 88 Bytes '
         print '=========================================='
 
-        h1.cmd('iperf3 -s -i 30 --logfile results/scenario1/1k/STD-TCP-1k-64b.txt &')
+        h1.cmd('iperf3 -s -i 30 > results/scenario1/1k/STD-TCP-1k-88b.txt &')
+        sleep(902)
         h1.cmd('killall iperf3')
         sleep(5)
         
@@ -340,7 +341,8 @@ class ExerciseRunner:
         print ' Scenario2 UDP - 1k - Payload 128 Bytes '
         print '=========================================='
         
-        h1.cmd('iperf3 -s -i 30 --logfile results/scenario2/1k/STD-UDP-1k-128b.txt &')
+        h1.cmd('iperf3 -s -i 30 > results/scenario2/1k/STD-UDP-1k-128b.txt &')
+        sleep(902)
         h1.cmd('killall iperf3')
         sleep(5)
 
@@ -354,7 +356,8 @@ class ExerciseRunner:
         print ' Scenario2 TCP - 1k - Payload 128 Bytes '
         print '=========================================='
 
-        h1.cmd('iperf3 -s -i 30 --logfile results/scenario2/1k/STD-TCP-1k-128b.txt &')
+        h1.cmd('iperf3 -s -i 30 > results/scenario2/1k/STD-TCP-1k-128b.txt &')
+        sleep(902)
         h1.cmd('killall iperf3')
         sleep(5)
         
@@ -368,7 +371,8 @@ class ExerciseRunner:
         print ' Scenario3 UDP - 1k - Payload 200 Bytes '
         print '=========================================='
         
-        h1.cmd('iperf3 -s -i 30 --logfile results/scenario3/1k/STD-UDP-1k-200b.txt &')
+        h1.cmd('iperf3 -s -i 30 > results/scenario3/1k/STD-UDP-1k-200b.txt &')
+        sleep(902)
         h1.cmd('killall iperf3')
         sleep(5)
 
@@ -382,7 +386,8 @@ class ExerciseRunner:
         print ' Scenario3 TCP - 1k - Payload 200 Bytes '
         print '=========================================='
 
-        h1.cmd('iperf3 -s -i 30 --logfile results/scenario3/1k/STD-TCP-1k-200b.txt &')
+        h1.cmd('iperf3 -s -i 30 > results/scenario3/1k/STD-TCP-1k-200b.txt &')
+        sleep(902)
         h1.cmd('killall iperf3')
         sleep(5)
         
